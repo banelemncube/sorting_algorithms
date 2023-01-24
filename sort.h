@@ -1,11 +1,13 @@
 #ifndef SORT_H
 #define SORT_H
 
-/* INCLUDED LIBRARIES */
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <stdbool.h>
 
-/* STRUCTS AND DEFINITIONS */
+#define INCREMENT 1
+#define DECREMENT -1
+
 /**
  * struct listint_s - Doubly linked list node
  *
@@ -20,38 +22,21 @@ typedef struct listint_s
 	struct listint_s *next;
 } listint_t;
 
-/* FUNCTION PROTOTYPES */
-/* function to print array of integers */
-void print_array(const int *array, size_t size);
-
-/* function to print list of integers */
-void print_list(const listint_t *list);
-
-/* function to sort array of integers with bubble sort */
+void print_array(const int *, size_t);
+void print_list(const listint_t *);
 void bubble_sort(int *array, size_t size);
-
-/* function to sort doubly linked list of integers with insertion sort */
 void insertion_sort_list(listint_t **list);
-
-/* function to sort array of integers with selection sort */
 void selection_sort(int *array, size_t size);
-
-/* function to sort array of integers with quick sort */
 void quick_sort(int *array, size_t size);
-void quick_sorting(int *array, size_t size, int *full_array, size_t full_size);
-
-/* function to sort array of integers with shell sort */
+void quick_sort_rec(int *array, int lower, int higher, size_t size);
+int lomuto_partition(int *array, int lower, int higher, size_t size);
 void shell_sort(int *array, size_t size);
-
-/* function to sort doubly linked list of integers with cocktail sort */
-void cocktail_sort_list(listint_t **list);
-
-/* function to sort array of integers with counting sort */
 void counting_sort(int *array, size_t size);
-
-/* function to sort array of integers with radix sort */
 void radix_sort(int *array, size_t size);
-int digit_counting(int *array, size_t size);
-int divider_set(int current_digit);
+void bitonic_sort(int *array, size_t size);
+void cocktail_sort_list(listint_t **list);
+void swap_nodes(listint_t **list, listint_t *node);
+listint_t *get_dlistint_lelem(listint_t *h);
+int getCantRep(int num);
 
 #endif

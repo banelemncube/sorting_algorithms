@@ -1,52 +1,53 @@
 #include "sort.h"
 
 /**
- * insertion_sort_list - sorts a doubly linked list of ints with insertion sort
- * doubly linked list is sorted in ascending order
- * @list: pointer to head of listint_t doubly linked list
- *
- */
-
+  * insertion_sort_list - Sorts an doubly linked list
+  * of integers in ascending order using
+  * the Insertion sort algorithm.
+  * @list: The doubly linked list to sort
+  *
+  * Return: Nothing!
+  */
 void insertion_sort_list(listint_t **list)
 {
-	listint_t *mover = NULL, *previous = NULL, *place_holder = NULL;
+	bool flag = false;
+	listint_t *tmp = NULL, *aux = NULL;
 
-	if (list == NULL)
+	if (!list || !(*list) || !(*list)->next)
 		return;
-	if (*list == NULL)
-		return;
-	previous = (*list);
-	if (previous->next)
-		mover = previous->next;
-	while (mover)
+
+	tmp = *list;
+	while (tmp->next)
 	{
-		previous = mover->prev;
-		place_holder = previous;
-		while (mover->n < previous->n)
+		if (tmp->n > tmp->next->n)
 		{
-			previous->next = mover->next;
-			mover->prev = previous->prev;
-			if (previous->prev)
-				previous->prev->next = mover;
-			if (mover->next)
-				mover->next->prev = previous;
-			mover->next = previous;
-			previous->prev = mover;
-			if (mover->prev)
-				previous = mover->prev;
+			tmp->next->prev = tmp->prev;
+			if (tmp->next->prev)
+				tmp->prev->next = tmp->next;
 			else
-			{
-				(*list) = mover;
-				print_list(*list);
-				break;
-			}
+				*list = tmp->next;
+
+			tmp->prev = tmp->next;
+			tmp->next = tmp->next->next;
+			tmp->prev->next = tmp;
+			if (tmp->next)
+				tmp->next->prev = tmp;
+
+			tmp = tmp->prev;
 			print_list(*list);
+
+			if (tmp->prev && tmp->prev->n > tmp->n)
+			{
+				if (!flag)
+					aux = tmp->next;
+				flag = true;
+				tmp = tmp->prev;
+				continue;
+			}
 		}
-		if (mover->n < place_holder->n)
-			mover = place_holder->next;
-		else if (place_holder->next)
-			mover = place_holder->next->next;
+		if (!flag)
+			tmp = tmp->next;
 		else
-			mover = place_holder->next;
+			tmp = aux, flag = false;
 	}
 }
