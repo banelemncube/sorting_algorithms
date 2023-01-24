@@ -1,32 +1,40 @@
 #include "sort.h"
 
 /**
- * selection_sort - function to sort array of ints ascending
- * @array: array given for sort
- * @size: size of given array
- * Return: Nothing
- */
-
+  * selection_sort - ...
+  * @array: ...
+  * @size: ...
+  *
+  * Return: Nothing!
+  */
 void selection_sort(int *array, size_t size)
 {
-	unsigned int i, j, temp, holder = 0;
+	size_t i = 0, j = 1, aux = 0, min = 0, limit = size - 1;
 
-	for (i = 0; i < size; i++)
+	if (size < 2)
+		return;
+
+	while (i < limit)
 	{
-		temp = i;
-		for (j = i + 1; j < size; j++)
+		if (j == size)
 		{
-			if (array[temp] > array[j])
+			if (i != min)
 			{
-				temp = j;
+				aux = array[i];
+				array[i] = array[min];
+				array[min] = aux;
+				print_array(array, size);
 			}
+
+			++i;
+			min = i;
+			j = i + 1;
+			continue;
 		}
-		if (temp != i)
-		{
-			holder = array[i];
-			array[i] = array[temp];
-			array[temp] = holder;
-			print_array(array, size);
-		}
+
+		if (array[min] > array[j])
+			min = j;
+
+		++j;
 	}
 }

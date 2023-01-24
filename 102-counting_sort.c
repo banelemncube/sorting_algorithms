@@ -1,52 +1,53 @@
 #include "sort.h"
 
 /**
- * counting_sort - sorts an array of ints ascending
- * @array: array given to be sorted
- * @size: size of given array
- * Return: Nothing
- */
+ * counting_sort - sort array with counting method
+ * @array: array to sort
+ * @size: size of array
+ *
+ * Return: nothing
+*/
 
 void counting_sort(int *array, size_t size)
-{	size_t i = 0, temp = 0, count = 0;
-	int *cnt_arr = NULL, *output = NULL, max = 0, j = 0;
+{
+	int max = 0, i = 1;
+	int *count = NULL, *arr_tmp = NULL;
 
-	output = malloc(sizeof(int) * size);
-	if (array == NULL || output == NULL)
+	if (!array || size < 2)
 		return;
 	max = array[0];
-	for (i = 0; i < size; i++)
+	while (i < (int) size)
+	{
 		if (array[i] > max)
 			max = array[i];
-	cnt_arr = malloc(sizeof(int) * (max + 1));
-	if (cnt_arr == NULL)
+		i++;
+	}
+	arr_tmp = malloc(sizeof(int) * size);
+	if (!arr_tmp)
+		return;
+	count = malloc(sizeof(int) * max + 1);
+	if (!count)
 	{
-		free(output);
+		free(arr_tmp);
 		return;
 	}
-	for (j = 0; j <= max; j++)
-/* all zeroes set in array */
-		cnt_arr[j] = 0;
-	for (i = 0; i < size; i++)
-/* store count each element in index */
-		cnt_arr[array[i]]++;
-	for (j = 0; j < max + 1; j++)
-/* storing count */
+
+	for (i = 0; i <= max; ++i)
+		count[i] = 0;
+	for (i = 0; i < (int) size; ++i)
+		count[array[i]]++;
+	for (i = 1; i <= max; ++i)
+		count[i] = count[i - 1] + count[i];
+	print_array(count, max + 1);
+	for (i = 0; i < (int) size; ++i)
 	{
-		temp = cnt_arr[j];
-		cnt_arr[j] += count;
-		count += temp;
+		arr_tmp[count[array[i]] - 1] = array[i];
+		count[array[i]]--;
 	}
-	print_array(cnt_arr, max + 1);
-	for (i = size - 1; i < size; i--)
-/* find indexes in count_arr, set in output array */
-	{
-		output[cnt_arr[array[i]] - 1] = array[i];
-		cnt_arr[array[i]]--;
-	}
-	for (i = 0; i < size; i++)
-/* copy back to array */
-		array[i] = output[i];
-	free(cnt_arr);
-	free(output);
+	for (i = 0; i < (int) size; ++i)
+		array[i] = arr_tmp[i];
+
+	free(count);
+	free(arr_tmp);
+	count = arr_tmp = NULL;
 }
